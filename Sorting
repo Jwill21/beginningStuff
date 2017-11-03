@@ -1,0 +1,199 @@
+#include <iostream>
+#include <string>
+
+using namespace std;
+
+void swap(int *x, int *y)
+{
+	int tmp = *x;
+	*x = *y;
+	*y = tmp;
+}
+
+void charSwap(char *a, char *b)
+{
+	char tmp = *a;
+	*a = *b;
+	*b = tmp;
+}
+
+void bubbleSort(int a[], char s[], int n, bool up)
+{
+	int comparisons = 0, swaps = 0;
+	bool swap  = false;
+	for (int i = 0; i < n - 1; i++)
+	{
+		for (int j = 0; j < n - 1 - i; j++)
+		{
+			if (up)
+			{
+				if (a[j] > a[j + 1])
+				{
+					swap(&a[j], &a[j + 1]);
+					charSwap(&s[j], &s[j + 1]);
+					swap++;
+					swap = true;
+				}
+				comparisons++;
+			}
+			else if (!up)
+			{
+				if (a[j] < a[j + 1])
+				{
+					swap(&a[j], &a[j + 1]);
+					cout << "Swapped " << a[j] << " with " << a[j+1] << " and got ";
+					printArray(a, s, n);
+					charSwap(&s[j], &s[j + 1]);
+					swap++;
+				}
+				comparisons++;
+			}
+		}
+	}
+	cout << "Swaps = " << swaps << ", Comparisons = " << comparisons << endl;
+}
+
+void selectionSort(int a[], char s[], int n, bool up)
+{
+	int comparisons = 0, swaps = 0;
+	for (int i = 0; i < n - 1; i++)
+	{
+		int min = i;
+		for (int j = i + 1; j < n; j++)
+		{
+			if (up)
+			{
+				if (a[i] < a[min])
+				{
+					min = j;
+				}
+				comparisons++;
+			}
+			else if (!up)
+			{
+				if (a[i] > a[min])
+				{
+					min = j;
+				}
+				comparisons++;
+			}
+		}
+		swap(&a[min], &a[i]);
+		charSwap(&s[min], &s[i]);
+		swaps++;
+	}
+	cout << "Swaps = " << swaps << ", Comparisons = " << comparisons << endl;
+}
+
+void insertionSort(int a[], char s[], int n, bool up)
+{
+	int comparisons = 0, swaps = 0;
+	int key;
+	for (int i = 1; i < n; i++)
+	{
+		key = a[i];
+		int j = i - 1;
+		if (up)
+		{
+			while (j >= 0 && a[j] > key)     // Shifts elements to the right to find correct
+			{
+				a[j + 1] = a[j];   // a[j+1] = a[i]
+				s[j + 1] = s[j];
+				j = j - 1;
+				comparisons++;
+			}
+			a[j + 1] = key;
+			s[j + 1] = key;
+			swaps++;
+		}                   // Inserts key at right position
+		else if (!up)
+		{
+			while (j >= 0 && a[j] < key)     // Shifts elements to the right to find correct
+			{
+				a[j + 1] = a[j];   // a[j+1] = a[i]
+				s[j + 1] = s[j];
+				j = j - 1;
+				comparisons++;
+			}
+			a[j + 1] = key;
+			s[j + 1] = key;
+			swaps++;
+		}
+	}
+	cout << "Swaps = " << swaps << ", Comparisons = " << comparisons << endl;
+}
+
+void printArray(int a[], char s[], int n)
+{
+	for (int i = 0; i < n; i++)
+	{
+		cout << a[i] << " ";
+	}
+	cout << endl;
+	for (int j = 0; j < n; j++)
+	{
+		cout << s[j] << " ";
+	}
+	cout << endl;
+}
+
+int main()
+{
+	int a[10] = { 4, 1, 3, 2, 0 };
+	char s[] = "ebdcafghij";
+	int n = 5;
+	string type;
+	char sort;
+	bool sortUp;
+
+	cout << "Enter sorting type: ";
+	cin >> type;
+
+	cout << "How many elements are in the array?: ";
+	cin >> n;
+
+	cout << "Ascending or descending? (a/d): ";
+	cin >> sort;
+
+		if (sort == 'a')
+		{
+		sortUp = true;
+		}
+		else if (sort == 'd')
+		{
+			sortUp = false;
+		}
+		else
+		{
+			cout << "That is not a valid answer." << endl;
+		}
+
+		cout << "Enter the element: ";
+		for (int i = 0; i < n; i++)
+		{
+			cin >> a[i];
+		}
+		if (type == "selection")
+		{
+			selectionSort(a, s, n, sortUp);
+		}
+		else if (type == "bubble")
+		{
+			bubbleSort(a, s, n, sortUp);
+		}
+		else if (type == "insertion")
+		{
+			insertionSort(a, s, n, sortUp);
+		}#
+	printArray(a, s, n);
+
+	system("pause");
+	return 0;
+}
+// swapped 3 and 5 and array is now [3,7,6,4,9,5]
+// swapped 4 and 7 and array is now [3,4,6,7,9,5]
+// swapped 5 and 6 and array is now [3,4,5,7,9,6]
+// swapped 6 and 7 and array is now [3,4,5,6,9,7]
+// swapped 7 and 9 and array is now [3,4,5,6,7,9]
+// swaps=5,comparisons=15
+// fdacbeghij
